@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    name: Verify and release build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - name: Install Rust toolchain
+        run: rustup show
+
+      - name: cargo test
+        run: cargo test --workspace
+
+      - name: cargo build --release
+        run: cargo build --workspace --release
+
+      - name: Prepare assets
+        run: |
+          mkdir -p dist
+          cp target/release/stellar-canary dist/stellar-canary-linux-x86_64
+          cd dist
+          sha256sum stellar-canary-linux-x86_64 > SHA256SUMS
+
+      - name: Upload release
+        uses: softprops/action-gh-release@3bb12739c298aeb8a4eeaf626c5b8d85266b0e65 # v2.6.2
+        with:
+          files: |
+            dist/stellar-canary-linux-x86_64
+            dist/SHA256SUMS
+

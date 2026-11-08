@@ -1,0 +1,53 @@
+//! Re-encoding a previously decoded XDR value.
+
+use stellar_xdr::{Limits, WriteXdr};
+
+use crate::decoder::DecodedValue;
+
+/// Re-encodes `value` back to base64 XDR.
+pub fn encode(value: &DecodedValue) -> Result<String, stellar_xdr::Error> {
+    match value {
+        DecodedValue::StellarValue(v) => v.to_xdr_base64(Limits::none()),
+        DecodedValue::ContractExecutable(v) => v.to_xdr_base64(Limits::none()),
+        DecodedValue::ScVal(v) => v.to_xdr_base64(Limits::none()),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::decoder::{decode, DecodedValue, XdrTypeName};
+    use stellar_xdr::{ContractExecutable, StellarValue};
+
+    #[test]
+    fn encoding_a_decoded_value_reproduces_the_same_value() {
+        let value = StellarValue::default();
+        let base64 = encode(&DecodedValue::StellarValue(value.clone())).expect("encodes");
+
+        let decoded = decode(XdrTypeName::StellarValue, &base64).expect("decodes");
+        let re_encoded = encode(&decoded).expect("re-encodes");
+
+        assert_eq!(base64, re_encoded);
+        match decoded {
+            DecodedValue::StellarValue(v) => assert_eq!(v, value),
+            DecodedValue::ContractExecutable(_) => panic!("expected StellarValue"),
+            DecodedValue::ScVal(_) => panic!("expected StellarValue"),
+        }
+    }
+
+    #[test]
+    fn encoding_a_decoded_contract_executable_reproduces_the_same_value() {
+        let value = ContractExecutable::Wasm(stellar_xdr::Hash([7; 32]));
+        let base64 = encode(&DecodedValue::ContractExecutable(value.clone())).expect("encodes");
+
+        let decoded = decode(XdrTypeName::ContractExecutable, &base64).expect("decodes");
+        let re_encoded = encode(&decoded).expect("re-encodes");
+
+        assert_eq!(base64, re_encoded);
+        match decoded {
+            DecodedValue::ContractExecutable(v) => assert_eq!(v, value),
+            DecodedValue::StellarValue(_) => panic!("expected ContractExecutable"),
+            DecodedValue::ScVal(_) => panic!("expected ContractExecutable"),
+        }
+    }
+}

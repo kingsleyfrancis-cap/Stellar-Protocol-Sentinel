@@ -1,0 +1,17 @@
+[package]
+name = "canary-fixtures"
+description = "Fixture model, loading, and validation for Stellar Protocol Canary."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[lints.clippy]
+all = "warn"
+
+[dependencies]
+canary-core.workspace = true
+thiserror.workspace = true
+serde.workspace = true
+toml.workspace = true
