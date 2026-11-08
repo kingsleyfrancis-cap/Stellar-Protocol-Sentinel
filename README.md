@@ -1,18 +1,6 @@
-# Stellar Protocol Canary
+## What is Protocol Sentinel?
 
-
-![Protocol-Canary](assets/ProtocolCanary-banner.svg)
-
-Rehearse Stellar protocol upgrades before they reach your production stack.
-
-[![CI](https://github.com/StellarCanary/Protocol-Canary/actions/workflows/ci.yml/badge.svg)](https://github.com/StellarCanary/Protocol-Canary/actions/workflows/ci.yml)
-[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
-
-[Documentation](https://stellarcanary.github.io/Protocol-Canary/) | [Fixtures](https://github.com/StellarCanary/ProtocolCanary-Fixtures) | [Action](https://github.com/StellarCanary/ProtocolCanary-Action)
-
-## What is Protocol Canary?
-
-Stellar Protocol Canary is a command-line tool that checks whether a Stellar
+Stellar Protocol Sentinel is a command-line tool that checks whether a Stellar
 application or piece of infrastructure remains compatible with a target
 Stellar protocol version. It runs a set of deterministic compatibility
 assertions ("fixtures") against three surfaces a Stellar project typically
@@ -21,7 +9,7 @@ transaction simulation.
 
 ## Why it exists
 
-Stellar protocol upgrades can change XDR structures, RPC behavior, and
+Stellar Protocol Sentinel upgrades can change XDR structures, RPC behavior, and
 Soroban host semantics. Projects usually discover incompatibilities only
 after upgrading a dependency or after a network has already moved to a new
 protocol version. Protocol Canary lets a project rehearse that upgrade
@@ -38,22 +26,6 @@ endpoint, before the network moves.
   for Soroban-specific protocol changes.
 
 ## Quick start
-
-Download a prebuilt binary and its checksum from the [Releases](https://github.com/StellarCanary/Protocol-Canary/releases) page. Checksums are verified via `sha256sum -c SHA256SUMS`.
-
-Alternatively, install a released version from source:
-
-```bash
-cargo install --git https://github.com/StellarCanary/Protocol-Canary --tag v0.1.1 --locked
-stellar-canary check
-```
-
-Or, from a local checkout of this repository:
-
-```bash
-cargo install --path crates/canary-cli
-stellar-canary check
-```
 
 During development, run the CLI directly from the workspace:
 
@@ -165,9 +137,9 @@ supplied via `--fixtures-dir`.
 
 ## Version compatibility
 
-| `Protocol-Canary` | Fixture pack | Target protocol | `ProtocolCanary-Action` |
+| `Protocol Sentinel` | Fixture pack | Target protocol | `ProtocolCanary-Action` |
 |---|---|---|---|
-| `v0.1.1` | `ProtocolCanary-Fixtures` `protocol-28/` | 28 | `v1` (default `version: "0.1.1"`) |
+| `v0.1.1` | `ProtocolSentinel-Fixtures` `protocol-28/` | 28 | `v1` (default `version: "0.1.1"`) |
 
 Only combinations that have actually been run together are listed here.
 `v0.1.0` reports predate the `counts` field and predate `ContractExecutable`
@@ -177,7 +149,7 @@ verifies against.
 
 ## Security
 
-Protocol Canary never asks for or stores a secret key, seed phrase, or
+Protocol Sentinel never asks for or stores a secret key, seed phrase, or
 private key, and the MVP never submits a transaction to any network — only
 read operations and simulation are performed. See [SECURITY.md](SECURITY.md).
 
@@ -185,20 +157,6 @@ read operations and simulation are performed. See [SECURITY.md](SECURITY.md).
 
 See [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md).
 
-## Maintainers & Community
-
-**Maintainer:** [@Hollujay](https://github.com/Hollujay) — reachable via
-this repository's GitHub profile; no other official contact channel is
-published for this project.
-
-**Community:** There is no dedicated community channel yet. Contribution
-and discussion happen through GitHub
-[issues](https://github.com/StellarCanary/Protocol-Canary/issues) and pull
-requests on this repository.
-
-**Contributors:**
-
-[![Contributors](https://contrib.rocks/image?repo=StellarCanary/Protocol-Canary)](https://github.com/StellarCanary/Protocol-Canary/graphs/contributors)
 
 ## Limitations
 
